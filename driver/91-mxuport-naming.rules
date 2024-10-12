@@ -1,0 +1,14 @@
+#
+# This is a udev rule file. Usb-serial creates device name ttyUSBx when UPort is detected.
+# These rules help to create alternate traditional UPort device name ttyMXUSBx for convenience.
+#
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="110a", ATTRS{idProduct}=="1250", ENV{DEVICE_ID}="110a:mxuport" 
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="110a", ATTRS{idProduct}=="1251", ENV{DEVICE_ID}="110a:mxuport" 
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="110a", ATTRS{idProduct}=="1410", ENV{DEVICE_ID}="110a:mxuport" 
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="110a", ATTRS{idProduct}=="1450", ENV{DEVICE_ID}="110a:mxuport" 
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="110a", ATTRS{idProduct}=="1451", ENV{DEVICE_ID}="110a:mxuport" 
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="110a", ATTRS{idProduct}=="1618", ENV{DEVICE_ID}="110a:mxuport" 
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="110a", ATTRS{idProduct}=="1658", ENV{DEVICE_ID}="110a:mxuport" 
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="110a", ATTRS{idProduct}=="1613", ENV{DEVICE_ID}="110a:mxuport" 
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="110a", ATTRS{idProduct}=="1653", ENV{DEVICE_ID}="110a:mxuport" 
+ENV{DEVICE_ID}=="110a:mxuport", SUBSYSTEMS=="usb-serial", KERNEL=="ttyUSB*", SYMLINK+="ttyMXUSB%n", MODE="0660"

@@ -1,0 +1,94 @@
+#!/bin/sh
+###############################################################################
+# Program:
+# 		MOXA Linux driver installer
+#	
+# History:
+# 2009/09/11
+#
+# Author:
+# Ken Huang, ken.huang@moxa.com
+#
+# Discription:
+# The script install and load the MOXA Linux driver.
+#
+###############################################################################
+
+TARGET_DRIVER="mxuport"
+MXVER=`awk '{if($1=="Version" && $2=="Number:"){print $3}}' version.txt`
+RULES=$(pwd)/driver/91-mxuport-naming.rules
+
+for DRIVER in $TARGET_DRIVER
+do
+	if lsmod | grep -qw $DRIVER ; then
+		rm -f tmp1 tmp2
+		echo "Found driver in system..."
+		echo "Unloading driver..."
+		rmmod $DRIVER > tmp1 2>&1
+		if [ -s tmp1 ]
+		then
+			cat tmp1
+			grep "is in use" tmp1 > tmp2 2>&1
+			if [ -s tmp2 ]
+			then
+				rm -f tmp1 tmp2
+				exit 1
+			fi
+			rm -f tmp2
+		fi
+		rm -f tmp1
+		echo "Unload driver successfully."
+		echo ""
+	fi
+done
+
+echo
+echo 'Linux assigns the tty port number by the sequence of discovery order starting from ttyUSB0.'
+echo 'COM Preserver function can bind static symbolic name to serial ports on UPort.'
+echo 'You may be required to configure the UPort after installation.'
+echo 'For more information, please read the readme.txt.'
+echo 'Do you want to enable COM Preserver function? [y/N].'
+
+read check
+case $check in
+[y])
+	FIXED_PORT=y
+	;;
+[Y])
+	FIXED_PORT=y
+	;;
+*)
+	FIXED_PORT=n
+    ;;
+esac
+
+grep -v SYMLINK $RULES > tmp.rules
+
+if [ "$FIXED_PORT" = "y" ]
+then
+	echo
+	echo 'Enter the prefix name of symbolic tty name: [ttyMXUSB]'
+
+	read PREFIX
+	if [ "$PREFIX" = "" ]
+	then
+		PREFIX=ttyMXUSB
+	fi
+
+	echo "ENV{DEVICE_ID}==\"110a:mxuport\", SUBSYSTEMS==\"usb-serial\", KERNEL==\"ttyUSB*\", SYMLINK+=\"$PREFIX%s{bComPreserver_com}\", MODE=\"0660\"" >> tmp.rules
+
+else
+	echo "ENV{DEVICE_ID}==\"110a:mxuport\", SUBSYSTEMS==\"usb-serial\", KERNEL==\"ttyUSB*\", SYMLINK+=\"ttyMXUSB%n\", MODE=\"0660\"" >> tmp.rules
+fi
+
+rm -f $RULES > /dev/null 2>&1
+mv tmp.rules $RULES > /dev/null 2>&1
+
+if make install ; then
+	echo ""
+	echo "Loading driver..."
+	modprobe $TARGET_DRIVER
+	echo "************************************************************************"
+	echo " MOXA UPort 1200/1400/1600 series driver ver $MXVER loaded successfully."
+	echo "************************************************************************"
+fi

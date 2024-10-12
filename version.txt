@@ -1,0 +1,73 @@
+Version Number: 6.1
+Product Line:   UPort 1200/1400/1600 Series Driver for Linux
+Platform:       Linux kernel 6.x(x86/x64/ARM32/ARM64)
+Company:        Moxa Inc.
+Date:           2023/09/18
+
+Support Product:
+===============
+UPort 1250, 1250I
+UPort 1410, 1450, 1450I 
+UPort 1610-8, 1650-8 
+UPort 1610-16, 1650-16
+UPort 1250-G2, 1250I-G2
+UPort 1410-G2, 1450-G2, 1450I-G2
+UPort 1610-8-G2, 1650-8-G2, 1650-8-G2-HUB, 1650I-8-G2
+
+Tested Linux: 
+=============
+Kernel 6.2.0
+
+Ubuntu 23.04 (kernel 6.2.0)
+
+Fedora 37 (kernel 6.2.12)
+Fedora 38_vm (kernel 6.2.9)
+
+Raspberry Pi (ARM) (kernel 6.1.21)
+
+Release Note:
+==============
+Ver6.1
+1. NewL Support MU250U/MU450U/MU850U UART.
+2. New: Support UPort 1250-G2/1250I-G2/1410-G2/1450-G2/1450I-G2/
+        1610-8-G2/1650-8-G2/1650-8-G2-HUB/1650I-8-G2.
+
+Ver6.0
+1. New: Divided an independent driver version 6.0 to support Linux kernel 6.x.
+
+Ver5.1
+1. New: Support ARM32/ARM64 platform.
+2. New: Support static symbolic tty name by COM Preserver function.
+3. Change: Downgraded software license from GPLv3 to GPLv2.
+4. Bugfix: Fix UPort 1250 setserial problems.
+5. Bugfix: Fix ioctl MOXA_SET_INTERFACE always return EINVAL.
+6. Bugfix: Fixed compile error on Fedora 31 (kernel 5.3.7)
+7. Bugfix: Fixed a kernel crash while removing any UPort 1250(I) from system.
+8. Bugfix: Fixed compile error on Fedora 35 (kernel 5.14.7)
+
+Ver5.0
+1. New: Support Raspbian Jessie or later for Raspberry Pi 2/3.
+2. New: Support Linux standard naming ttyUSBx. Legacy naming ttyMXUSBx is still
+        supported as a linkage.
+3. Improve: Support to disable FIFO by setserial utility.
+4. Bugfix: Fix read/write issue which caused by baud rate setting problem under
+   Fedora 25 (Kernel 4.13.16).
+5. Bugfix: Fix the issue that modem status is not correct after ports are
+           opened.
+6. Change: Divided an independent driver version 5.0 to support Linux kernel
+           5.x.
+
+Ver1.2
+1. New: Support kernel version up to 3.4.4
+2. Bugfix: Fix bug of compiling fail under gcc version 3.3.3. 
+3. Bugfix: Fixed system memory leak when application keeps doing open/close 
+           operations for a long time execution.
+4. Bugfix: Fixed application hang up when open/close frequencytly.
+
+Ver1.1
+1. New: Support auto installation.
+
+Ver1.0
+1. New: Official released.
+
+-End-
