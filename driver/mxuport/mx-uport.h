@@ -324,7 +324,7 @@ static int mxuport_open(struct tty_struct *tty, struct usb_serial_port *port);
 static void mxuport_close(struct usb_serial_port *port);
 static int mxuport_tiocmset (struct tty_struct *tty, unsigned int set, unsigned int clear);
 static int mxuport_tiocmget(struct tty_struct *tty);
-static void mxuport_break_ctl (struct tty_struct *tty, int break_state);
+static int mxuport_break_ctl (struct tty_struct *tty, int break_state);
 
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(5,14,0)) 
 static int mxuport_chars_in_buffer(struct tty_struct *tty);

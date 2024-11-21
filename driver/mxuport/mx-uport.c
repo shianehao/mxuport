@@ -1403,7 +1403,7 @@ static int mxuport_tiocmget(struct tty_struct *tty)
  *
  *	This function sends a break to the port.
  */
-static void mxuport_break_ctl (struct tty_struct *tty, int break_state)
+static int mxuport_break_ctl (struct tty_struct *tty, int break_state)
 {
 	struct usb_serial_port *port = tty->driver_data;
 	struct mxuport_port *mx_port;
@@ -1411,7 +1411,7 @@ static void mxuport_break_ctl (struct tty_struct *tty, int break_state)
 
 	mx_port = usb_get_serial_port_data(port);
 	if(mx_port == NULL)
-		return;
+		return 	-ENODEV;
 
 	if (break_state == -1) {
 		dbg("%s - Sending break to port %d", __FUNCTION__, mx_port->portno);
@@ -1435,7 +1435,7 @@ static void mxuport_break_ctl (struct tty_struct *tty, int break_state)
 		dbg("%s - error sending break set/clear command.", __FUNCTION__);
 	}
 
-	return;
+	return status;
 }
 
 #if(LINUX_VERSION_CODE < KERNEL_VERSION(6,1,0))
